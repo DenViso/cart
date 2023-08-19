@@ -13,12 +13,17 @@ type InitialState = {
   loading: boolean;
   cards: Card[];
   error: string;
+   amount: number;
+  total: number;
 }
 
 const initialState: InitialState = {
   loading: false,
   cards: [],
   error: '',
+  amount: 0,
+  total: 0
+ 
 }
 
 const CardSlice = createSlice({
@@ -35,11 +40,22 @@ const CardSlice = createSlice({
       const card = state.cards.find((card) => card.id === action.payload)
       if (card) card.amount++
     },
+    // decreaseOne: (state, action: PayloadAction<string>) => {
+    //   const card = state.cards.find((card) => card.id === action.payload)
+    //   if (card) card.amount--
+    //   if (card.amount === 0 ) {
+    //     state.cards = state.cards.filter((card) => card.id !== action.payload)
+    //   }
+    // },
     decreaseOne: (state, action: PayloadAction<string>) => {
       const card = state.cards.find((card) => card.id === action.payload)
-      if (card) card.amount--
-      if (card.amount === 0) {
-        state.cards = state.cards.filter((card) => card.id !== action.payload)
+      if (card) {
+        if (card.amount > 0) {
+          card.amount--
+          if (card.amount === 0) {
+            state.cards = state.cards.filter((c) => c.id !== action.payload)
+          }
+        }
       }
     },
     calculateCart: (state) => {
